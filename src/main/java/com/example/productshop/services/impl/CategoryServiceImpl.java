@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.productshop.constants.GlobalConstants.*;
 
@@ -45,5 +48,20 @@ public class CategoryServiceImpl implements CategoryService {
         Arrays.stream(categorySeedDTOs).filter(validationUtil::isValid)
                 .map(categorySeedDto -> modelMapper.map(categorySeedDto, Category.class))
                 .forEach(categoryRepository::save);
+    }
+
+    @Override
+    public Set<Category> findRandomCategories() {
+
+        Set<Category> categorySet = new HashSet<>();
+        int categoryCount = ThreadLocalRandom.current().nextInt(1, 3);
+        long totalCategoriesCount = categoryRepository.count();
+
+        for (int i = 0; i < categoryCount; i++) {
+            long randomId = ThreadLocalRandom.current().nextLong(1, totalCategoriesCount + 1);
+
+            categorySet.add(categoryRepository.findById(randomId).orElse(null));
+        }
+        return categorySet;
     }
 }

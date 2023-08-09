@@ -9,6 +9,9 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity{
 
+//    Products have an id, name (at least 3 characters), price, buyerId (optional) and sellerId as IDs of users.
+//    Products should have many categories.
+
     private String name;
     private BigDecimal price;
     private User buyer;

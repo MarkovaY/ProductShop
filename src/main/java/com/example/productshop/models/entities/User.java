@@ -11,6 +11,10 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends BaseEntity{
 
+//    Users have an id, first name (optional) and last name (at least 3 characters) and age (optional).
+//    Users should have many products sold and many products bought.
+//    Users should have many friends (i.e. users).
+
     private String firstName;
     private String lastName;
     private Integer age;
