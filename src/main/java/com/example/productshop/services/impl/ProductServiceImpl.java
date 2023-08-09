@@ -1,5 +1,6 @@
 package com.example.productshop.services.impl;
 
+import com.example.productshop.models.dto.ProductNameAndPriceDto;
 import com.example.productshop.models.dto.ProductSeedDto;
 import com.example.productshop.models.entities.Product;
 import com.example.productshop.models.entities.User;
@@ -17,6 +18,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.productshop.constants.GlobalConstants.RESOURCE_FILE_PATH;
 
@@ -55,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(productSeedDto -> {
                     Product product = modelMapper.map(productSeedDto, Product.class);
                     product.setSeller(userService.findRandomUser());
-                    if(product.getPrice().compareTo(BigDecimal.valueOf(500L)) > 0){
+                    if(product.getPrice().compareTo(BigDecimal.valueOf(700L)) > 0){
                         User buyer = userService.findRandomUser();
                         if(product.getSeller() == buyer){
                             buyer = userService.findRandomUser();
@@ -68,5 +71,20 @@ public class ProductServiceImpl implements ProductService {
                     return product;
                 })
                 .forEach(productRepository::save);
+    }
+
+    @Override
+    public List<ProductNameAndPriceDto> findAllProductsInRangeOrderedByPrice(BigDecimal minPriceRange, BigDecimal maxPriceRange) {
+        return productRepository
+                .findAllByPriceBetweenAndBuyerIsNullOrderByPrice(minPriceRange, maxPriceRange)
+                .stream()
+                .map(product -> {
+                    ProductNameAndPriceDto productNameAndPriceDto = modelMapper
+                            .map(product, ProductNameAndPriceDto.class);
+
+                    productNameAndPriceDto.setSeller(String.format("%s %s", product.getSeller().getFirstName(), product.getSeller().getLastName()));
+                    return productNameAndPriceDto;
+                })
+                .collect(Collectors.toList());
     }
 }
