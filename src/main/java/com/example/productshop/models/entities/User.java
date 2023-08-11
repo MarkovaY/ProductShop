@@ -1,9 +1,6 @@
 package com.example.productshop.models.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Set;
 
@@ -19,6 +16,7 @@ public class User extends BaseEntity{
     private String lastName;
     private Integer age;
     private Set<User> friends;
+    private Set<Product> productsForSale;
 
     public User() {
     }
@@ -57,5 +55,14 @@ public class User extends BaseEntity{
 
     public void setFriends(Set<User> friends) {
         this.friends = friends;
+    }
+
+    @OneToMany(mappedBy = "seller")
+    public Set<Product> getProductsForSale() {
+        return productsForSale;
+    }
+
+    public void setProductsForSale(Set<Product> productsForSale) {
+        this.productsForSale = productsForSale;
     }
 }

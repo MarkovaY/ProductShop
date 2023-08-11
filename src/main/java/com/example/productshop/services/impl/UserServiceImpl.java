@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
         long randomId = ThreadLocalRandom.current().nextLong(1, userRepository.count() + 1);
         return userRepository.findById(randomId).orElse(null);
     }
+
+    @Override
+    public void findAllUsersWithAtLeastOneSoldProduct() {
+        userRepository.findAllUsersWithAtLeastOneProductSoldOrderByLastNameThenByFirstName();
+    }
 }

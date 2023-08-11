@@ -1,6 +1,7 @@
 package com.example.productshop;
 
 import com.example.productshop.models.dto.ProductNameAndPriceDto;
+import com.example.productshop.models.entities.User;
 import com.example.productshop.services.CategoryService;
 import com.example.productshop.services.ProductService;
 import com.example.productshop.services.UserService;
@@ -59,6 +60,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     private void successfullySoldProducts() {
 
+        userService.findAllUsersWithAtLeastOneSoldProduct();
     }
 
     private void productsInRange() throws IOException {
